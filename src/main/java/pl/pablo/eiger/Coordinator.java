@@ -43,9 +43,9 @@ public class Coordinator extends UntypedActor {
     
     private void startSystem(){
         la_log.info("Uruchamiam system.");
-        ActorRef ar_Receiver = this.context().actorOf(Props.create(Receiver.class).withDispatcher("akka.actor.receiver-dispatcher"), "Receiver");
-        ActorRef ar_Notifier = this.context().actorOf(new RoundRobinPool(2).props(Props.create(Notifier.class).withDispatcher("akka.actor.notifier-dispatcher")), "Notifier");
-        ar_Processor = this.context().actorOf(new RoundRobinPool(3).props(Props.create(Processor.class, ar_Notifier)).withDispatcher("akka.actor.processor-dispatcher"), "Processor");
+        ActorRef ar_Receiver = this.context().actorOf(Props.create(Receiver.class), "Receiver");
+        ActorRef ar_Notifier = this.context().actorOf(new RoundRobinPool(2).props(Props.create(Notifier.class)), "Notifier");
+        ar_Processor = this.context().actorOf(new RoundRobinPool(3).props(Props.create(Processor.class, ar_Notifier)), "Processor");
         ar_Receiver.tell(Commands.START, this.self());
     }
 }
